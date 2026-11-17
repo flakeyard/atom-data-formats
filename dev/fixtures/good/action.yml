@@ -1,0 +1,11 @@
+name: Example
+description: An action of the project.
+inputs:
+  token:
+    description: The token.
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: echo "${{ inputs.token }}" | wc -c
+      shell: bash

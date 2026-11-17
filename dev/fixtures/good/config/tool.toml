@@ -1,0 +1,8 @@
+# A TOML file as taplo writes it.
+[package]
+name = "example"
+values = [1, 2, 3]
+inline = { a = 1, b = "two" }
+
+[[items]]
+id = 1

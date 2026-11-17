@@ -1,0 +1,10 @@
+name: Build
+description: An action whose input has no description.
+inputs:
+  target:
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: echo build
+      shell: bash

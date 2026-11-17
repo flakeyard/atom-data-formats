@@ -1,0 +1,7 @@
+name: Setup
+description: A local action.
+runs:
+  using: composite
+  steps:
+    - run: echo setup
+      shell: bash

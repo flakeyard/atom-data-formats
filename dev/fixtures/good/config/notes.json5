@@ -1,0 +1,2 @@
+// JSON5 is neither formatted nor linted.
+{unquoted:    'single quotes',   trailing: [1,2,],}

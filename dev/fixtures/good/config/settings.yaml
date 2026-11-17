@@ -1,0 +1,16 @@
+# The keep indicator keeps the trailing empty lines of the value, which
+# prettier leaves as they are.
+kept: |+
+  line one
+  line two
+
+folded: >+
+  folded
+  text
+
+
+plain: |
+  value
+on: push # one space before a comment
+enabled: true
+url: https://example.org/a/very/long/path/that/makes/this/line/longer/than/eighty/characters
