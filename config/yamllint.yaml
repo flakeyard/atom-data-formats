@@ -1,0 +1,84 @@
+# flakeyard's configuration of yamllint: every rule of yamllint's default
+# configuration, with every parameter at its default, except where noted.
+yaml-files:
+  - "*.yaml"
+  - "*.yml"
+  - ".yamllint"
+
+rules:
+  anchors:
+    level: error
+    forbid-undeclared-aliases: true
+    forbid-duplicated-anchors: false
+    forbid-unused-anchors: false
+  braces:
+    level: error
+    forbid: false
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: -1
+    max-spaces-inside-empty: -1
+  brackets:
+    level: error
+    forbid: false
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: -1
+    max-spaces-inside-empty: -1
+  colons:
+    level: error
+    max-spaces-before: 0
+    max-spaces-after: 1
+  commas:
+    level: error
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: 1
+  comments:
+    level: warning
+    require-starting-space: true
+    ignore-shebangs: true
+    # One space before an inline comment, as prettier writes it.
+    min-spaces-from-content: 1
+  comments-indentation:
+    level: warning
+  document-end: disable
+  # Off: a document needs no leading ---.
+  document-start: disable
+  empty-lines:
+    level: error
+    max: 2
+    max-start: 0
+    max-end: 0
+  empty-values: disable
+  float-values: disable
+  hyphens:
+    level: error
+    max-spaces-after: 1
+  indentation:
+    level: error
+    spaces: consistent
+    indent-sequences: true
+    check-multi-line-strings: false
+  key-duplicates:
+    level: error
+    forbid-duplicated-merge-keys: false
+  key-ordering: disable
+  # Off: lines that cannot be broken, such as URLs, are allowed.
+  line-length: disable
+  new-line-at-end-of-file:
+    level: error
+  new-lines:
+    level: error
+    type: unix
+  octal-values: disable
+  quoted-strings: disable
+  trailing-spaces:
+    level: error
+  truthy:
+    level: warning
+    allowed-values:
+      - "true"
+      - "false"
+    # Off: the key on of GitHub Actions workflows.
+    check-keys: false
