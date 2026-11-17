@@ -86,8 +86,9 @@ From the project's source, which for a git flake holds only tracked files:
   whose formatter and `useEditorconfig` are off;
 - `.prettierignore` and `.gitignore` at the root, whose files prettier skips,
   also a tracked file that `.gitignore` lists. prettier reads them itself, in
-  the hook and in the check alike. biome reads `.gitignore` only with
-  `vcs.useIgnoreFile`, which the default leaves off.
+  the hook and in the check alike. biome does not read `.gitignore`: its version
+  control integration is off in the default and fails evaluation in a project's
+  file (below).
 
 The check `checks.data-formats` gets only the files that the `files` of its
 hooks match, so it does not change when other files do. yamllint resolves
@@ -142,6 +143,11 @@ the schemas its package ships.
   found with `builtins.fromJSON` in the JSON forms and on a line in the JSONC
   forms; such patterns of `includes` of any section and of `overrides` fail
   evaluation in the JSON forms and are not detected in the JSONC forms.
+  `vcs.useIgnoreFile` with `vcs.enabled` fails evaluation too, since biome would
+  then read the `.gitignore` of the working directory, which the check does not
+  hold; in the JSONC forms a line that sets `useIgnoreFile` to `true` fails.
+  Lines of the JSONC forms that start with `//` are skipped; a key inside a
+  `/* */` comment is taken as set.
 - Configuration files below the root do not apply: the tools get the chosen file
   by flag, and biome applies a nested `biome.json` only below the directory of
   its own configuration file.
@@ -167,8 +173,10 @@ The defaults:
 - [`config/yamllint.yaml`][yl] extends nothing and lists every rule of the
   default configuration of yamllint with its level and parameters, except: one
   space before an inline comment (`comments.min-spaces-from-content: 1`), as
-  prettier writes it; `document-start` and `line-length` off; and
-  `truthy.check-keys: false`, for the key `on` of workflows.
+  prettier writes it; `document-start` and `line-length` off; `empty-lines` off,
+  since prettier removes other empty lines and keeps those that belong to a
+  block scalar with `+`; and `truthy.check-keys: false`, for the key `on` of
+  workflows.
 - [`config/biome.json`][bi] is a root configuration that lints only: the
   formatter, the assist, `useEditorconfig` and the version control integration
   are off. It sets every lint rule of biome for JSON at its default severity,

@@ -76,9 +76,11 @@ the tools of `nixos-26.05` at `ac588ef1` (prettier 3.8.3, taplo 0.10.0, yamllint
   `extends` with a path and `ignore-from-file` against the working directory.
   Without `--strict` it exits with 0 on warnings, and the default configuration
   reports `comments`, `comments-indentation`, `document-start` and `truthy` as
-  warnings. With every default rule, except `line-length` and `document-start`
-  off, one space before inline comments and `truthy` without keys, it reports
-  nothing in the 92 YAML files of flakeyard.
+  warnings. Its rule `empty-lines` reports the empty lines at the end of a file
+  that belong to the value of a block scalar with `+`, which prettier keeps.
+  With every default rule, except `line-length` and `document-start` off, one
+  space before inline comments and `truthy` without keys, it reports nothing in
+  the 92 YAML files of flakeyard.
 - biome 2.4.15 has nine lint rules for JSON: `noBiomeFirstException`,
   `noDuplicateObjectKeys`, `noQuickfixBiome` and `useBiomeIgnoreFolder`, which
   are recommended, `noDuplicateDependencies`, and four in `nursery`.
@@ -191,10 +193,13 @@ evaluation. These forms fail evaluation with a message that names them:
 - in yamllint's files, a top-level `extends` whose value on its line is not
   `default` or `relaxed`, and the key `ignore-from-file` at any depth, found by
   lines, since Nix does not read YAML;
-- in biome's files, `extends`, read with `builtins.fromJSON` in the JSON forms
-  and found by lines in the JSONC forms, and, in the JSON forms, patterns of
-  `includes`, of any section and of `overrides`, that do not start with `**`
-  after their `!`.
+- in biome's files, `extends` and `vcs.useIgnoreFile` with `vcs.enabled`, read
+  with `builtins.fromJSON` in the JSON forms and found by lines that do not
+  start with `//` in the JSONC forms (there `useIgnoreFile` set to `true`
+  alone), and, in the JSON forms, patterns of `includes`, of any section and of
+  `overrides`, that do not start with `**` after their `!`. With the version
+  control integration, biome reads the `.gitignore` of the working directory,
+  which the check of the domain does not hold.
 
 The defaults:
 
@@ -205,9 +210,10 @@ The defaults:
 - `config/yamllint.yaml` extends nothing and lists every rule of yamllint's
   default configuration with its level and parameters, except
   `comments.min-spaces-from-content: 1`, which is what prettier writes,
-  `document-start: disable`, `line-length: disable`, since lines that cannot be
-  broken are allowed, and `truthy.check-keys: false`, for the key `on` of
-  workflows;
+  `document-start: disable`, `empty-lines: disable`, since prettier removes
+  other empty lines and keeps those of block scalars with `+`,
+  `line-length: disable`, since lines that cannot be broken are allowed, and
+  `truthy.check-keys: false`, for the key `on` of workflows;
 - `config/biome.json` is a root configuration with the formatter, the assist,
   `useEditorconfig` and the version control integration off, `files.maxSize` and
   `files.ignoreUnknown` at their defaults, and every lint rule for JSON at its
@@ -283,7 +289,8 @@ error and the next-major warning.
   biome's `includes` must start with `**`.
 - (−) `renovate.json5` and JSON5 files are neither formatted nor validated.
 - (−) The lines that detect `extends` and `ignore-from-file` of yamllint and
-  `extends` of biome's JSONC miss a value on a later line or in a flow mapping.
+  `extends` and `useIgnoreFile` of biome's JSONC miss a value on a later line or
+  in a flow mapping, and take a key inside a `/* */` comment as set.
 - (−) Adopting the atom fails workflow-release until its actions describe their
   inputs.
 

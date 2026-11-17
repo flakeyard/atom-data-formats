@@ -3,8 +3,9 @@
 # root, a JavaScript configuration of prettier, the key prettier of
 # package.json and overrides of prettier with a directory, a schema in the
 # configuration of taplo, extends with a path and ignore-from-file in the
-# configuration of yamllint, and extends and includes that start without **
-# in the configuration of biome. The presets of yamllint and includes that
+# configuration of yamllint, and extends, includes that start without ** and
+# useIgnoreFile with vcs.enabled in the configuration of biome; keys in //
+# comments of JSONC do not count. The presets of yamllint and includes that
 # start with ** are fine.
 {
   facts,
@@ -102,6 +103,16 @@
           errors "biome-includes" == [
             "atom-data-formats: the atom cannot pass these configurations of biome to it: biome.json (includes that do not start with **: src/**, !dist/**, docs/*.json); write the configuration in one of biome.json, biome.jsonc, .biome.json, .biome.jsonc instead."
           ];
+        "useIgnoreFile of biome fails" =
+          errors "biome-ignore-file" == [
+            "atom-data-formats: the atom cannot pass these configurations of biome to it: biome.json (useIgnoreFile); write the configuration in one of biome.json, biome.jsonc, .biome.json, .biome.jsonc instead."
+          ];
+        "useIgnoreFile of biome in JSONC fails" =
+          errors "biome-ignore-file-jsonc" == [
+            "atom-data-formats: the atom cannot pass these configurations of biome to it: .biome.jsonc (useIgnoreFile); write the configuration in one of biome.json, biome.jsonc, .biome.json, .biome.jsonc instead."
+          ];
+        "useIgnoreFile without vcs.enabled is fine" = errors "biome-vcs-off" == [ ];
+        "commented-out keys of biome in JSONC are fine" = errors "biome-commented" == [ ];
         "the presets of yamllint and ignore are fine" = errors "yamllint-presets" == [ ];
         "includes of biome that start with ** are fine" = errors "biome-includes-anywhere" == [ ];
         "a project without such files evaluates" = errors "../good" == [ ];
