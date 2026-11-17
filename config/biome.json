@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "files": {
+    "ignoreUnknown": false,
+    "maxSize": 1048576
+  },
+  "vcs": {
+    "enabled": false,
+    "useIgnoreFile": false
+  },
+  "formatter": {
+    "enabled": false,
+    "useEditorconfig": false
+  },
+  "assist": {
+    "enabled": false
+  },
+  "json": {
+    "linter": {
+      "enabled": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noBiomeFirstException": "error",
+        "noDuplicateDependencies": "off",
+        "noDuplicateObjectKeys": "error",
+        "noQuickfixBiome": "info",
+        "useBiomeIgnoreFolder": "warn"
+      },
+      "nursery": {
+        "noEmptyObjectKeys": "off",
+        "noTopLevelLiterals": "off",
+        "noUntrustedLicenses": "off",
+        "useRequiredScripts": "off"
+      }
+    }
+  }
+}
