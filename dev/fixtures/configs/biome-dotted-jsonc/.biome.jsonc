@@ -1,0 +1,2 @@
+// The rule is off.
+{ "linter": { "rules": { "suspicious": { "noDuplicateObjectKeys": "off" } } } }

@@ -1,0 +1,4 @@
+// A configuration that extends another one.
+{
+  "extends": ["./base.json"]
+}
