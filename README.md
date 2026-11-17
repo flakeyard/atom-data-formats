@@ -77,6 +77,7 @@ From the project's source, which for a git flake holds only tracked files:
   `.gitlab/`, `.renovaterc` and `.renovaterc.json`; `.github/dependabot.yml` or
   `.yaml`; the YAML files of `.github/ISSUE_TEMPLATE/`;
 - the configuration files at the standard paths of the table below;
+- `package.json` at the root, for its key `prettier`;
 - `.editorconfig`, which prettier reads: its `max_line_length`, `indent_style`,
   `indent_size` or `tab_width` and `end_of_line` apply where the chosen
   configuration of prettier sets no `printWidth`, `useTabs`, `tabWidth` or
@@ -116,10 +117,12 @@ the schemas its package ships.
   ([FY-0017][fy-0017]). A JavaScript or TypeScript configuration, `.prettierrc`
   or `prettier.config` with the extension `js`, `cjs`, `mjs`, `ts`, `cts` or
   `mts`, fails evaluation with a message that names it, since prettier would
-  ignore it. prettier also ignores the key `prettier` of `package.json` and
-  resolves the patterns of `overrides` against the directory of the chosen file,
-  a store path, so that a pattern with a directory matches no file.
-  atom-markdown fails evaluation on both; this atom does not detect them yet.
+  ignore it. So do the key `prettier` of `package.json`, which prettier ignores,
+  and, in `.prettierrc.json` and `.prettierrc.toml`, a pattern of `overrides`
+  with a directory, which prettier resolves against the directory of the chosen
+  file, a store path, so that it matches no file. The other forms of
+  `.prettierrc` are not read by Nix. These rules come from lib-atom, the same as
+  atom-markdown's.
 - taplo also takes `taplo.toml` and gets the chosen file with `--config`, as the
   formatter and in the hook. The hook runs `taplo lint --no-schema`, so a
   `schema`, at the top or in a `[[rule]]`, fails evaluation.

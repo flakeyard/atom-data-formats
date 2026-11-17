@@ -1,6 +1,7 @@
 # Project files the atom does not take fail evaluation with a message that
 # names them (FY-0037): more than one configuration file of a tool at the
-# root, a JavaScript configuration of prettier, a schema in the
+# root, a JavaScript configuration of prettier, the key prettier of
+# package.json and overrides of prettier with a directory, a schema in the
 # configuration of taplo, extends with a path and ignore-from-file in the
 # configuration of yamllint, and extends and includes that start without **
 # in the configuration of biome. The presets of yamllint and includes that
@@ -64,6 +65,14 @@
         "a JavaScript configuration of prettier fails with its names" =
           errors "js-config" == [
             "atom-data-formats: the atom cannot pass these configurations of prettier to it: .prettierrc.cjs, prettier.config.ts; write the configuration in one of ${prettiers} instead."
+          ];
+        "the key prettier of package.json fails" =
+          errors "package-json" == [
+            "atom-data-formats: the atom cannot pass these configurations of prettier to it: the key prettier of package.json; write the configuration in one of ${prettiers} instead."
+          ];
+        "overrides of prettier with a directory fail" =
+          errors "prettier-directories" == [
+            "atom-data-formats: the atom cannot pass these configurations of prettier to it: .prettierrc.json (overrides with a directory: docs/*.yaml); write the configuration in one of ${prettiers} instead."
           ];
         "a schema of taplo fails" =
           errors "taplo-schema" == [

@@ -96,38 +96,13 @@ in
 {
   # The file of prettier replaces the defaults of this atom and of
   # atom-markdown alike (FY-0017).
-  prettier = chosen {
-    tool = "prettier";
-    default = root + "/config/prettier.json";
-    # The files that prettier finds by name, other than package.json and
-    # package.yaml, whose key prettier the atom does not read.
-    names = [
-      ".prettierrc"
-      ".prettierrc.json"
-      ".prettierrc.json5"
-      ".prettierrc.yaml"
-      ".prettierrc.yml"
-      ".prettierrc.toml"
-    ];
-    # prettier ignores these with --config, without a message. The key
-    # prettier of package.json and overrides with a directory, which
-    # atom-markdown also rejects, are not detected here until lib-atom
-    # holds that check for both atoms (FY-0040).
-    unsupported = [
-      ".prettierrc.js"
-      ".prettierrc.cjs"
-      ".prettierrc.mjs"
-      ".prettierrc.ts"
-      ".prettierrc.cts"
-      ".prettierrc.mts"
-      "prettier.config.js"
-      "prettier.config.cjs"
-      "prettier.config.mjs"
-      "prettier.config.ts"
-      "prettier.config.cts"
-      "prettier.config.mts"
-    ];
-  };
+  prettier = chosen (
+    {
+      tool = "prettier";
+      default = root + "/config/prettier.json";
+    }
+    // shared.prettier { inherit lib project; }
+  );
   taplo = chosen {
     tool = "taplo";
     default = root + "/config/taplo.toml";

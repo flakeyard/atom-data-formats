@@ -1,0 +1,1 @@
+{ "overrides": [{ "files": "docs/*.yaml", "options": { "tabWidth": 4 } }] }
