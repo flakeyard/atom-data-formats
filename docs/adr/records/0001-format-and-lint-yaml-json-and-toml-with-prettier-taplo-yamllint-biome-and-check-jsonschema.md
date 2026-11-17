@@ -47,9 +47,10 @@ Decisions of flakeyard require of it:
   stricter default ships first under `config/next/`; the warning of the next
   major version lives in `nix/next-major.nix`.
 - [FY-0040][fy-0040]: the check of `follows`, the warning of the next major
-  version, the choice of configuration files and the files of a domain are
-  functions of lib-atom, which the atom pins in its own `flake.lock`, and the
-  helpers of the tests come from its `internal/testing`.
+  version, the choice of configuration files, the configuration files of
+  prettier and the files of a domain are functions of lib-atom, which the atom
+  pins in its own `flake.lock`, and the helpers of the tests come from its
+  `internal/testing`.
 
 Reading git-hooks.nix at `204b6977` and treefmt-nix at `0d6d739a`, and running
 the tools of `nixos-26.05` at `ac588ef1` (prettier 3.8.3, taplo 0.10.0, yamllint
@@ -176,12 +177,15 @@ The function `config` of lib-atom chooses each file ([FY-0040][fy-0040]):
 - biome: `biome.json`, `biome.jsonc`, `.biome.json` and `.biome.jsonc`, else
   `config/biome.json`.
 
-The names of prettier are those of atom-markdown, so a project's file replaces
-the defaults of both atoms. More than one file of a tool fails evaluation. These
-forms fail evaluation with a message that names them:
+The names and the unsupported forms of prettier come from the function
+`prettier` of lib-atom, which atom-markdown also takes, so a project's file
+replaces the defaults of both atoms. More than one file of a tool fails
+evaluation. These forms fail evaluation with a message that names them:
 
-- a JavaScript or TypeScript configuration of prettier, which prettier ignores
-  with `--config`;
+- a JavaScript or TypeScript configuration of prettier, the key `prettier` of
+  `package.json`, and overrides with a directory in `.prettierrc.json` and
+  `.prettierrc.toml`, which prettier ignores or resolves against the directory
+  of the chosen file with `--config`;
 - a `schema` of taplo, at the top or in a `[[rule]]`, read with
   `builtins.fromTOML`, since the hook passes `--no-schema`;
 - in yamllint's files, a top-level `extends` whose value on its line is not
@@ -191,11 +195,6 @@ forms fail evaluation with a message that names them:
   and found by lines in the JSONC forms, and, in the JSON forms, patterns of
   `includes`, of any section and of `overrides`, that do not start with `**`
   after their `!`.
-
-The key `prettier` of `package.json` and overrides of prettier with a directory,
-which atom-markdown rejects, are not detected here: the check is logic for two
-atoms and belongs in lib-atom ([FY-0040][fy-0040]); until lib-atom has it, a
-project that imports only this atom gets no error for them.
 
 The defaults:
 
@@ -261,7 +260,7 @@ error and the next-major warning.
 - Every tool MUST get the chosen file by flag, and the chosen file MUST be the
   project's file at a standard path at the root when one exists, else the
   default of `config/`, as a store path of its own.
-- The standard paths of prettier MUST be those of atom-markdown.
+- The configuration files of prettier MUST come from `prettier` of lib-atom.
 - yamllint MUST run with `--strict`, and biome with `--error-on-warnings`.
 - taplo lint MUST run with `--no-schema`, and check-jsonschema only with the
   schemas its package ships.
@@ -283,8 +282,6 @@ error and the next-major warning.
 - (−) A configuration of biome or yamllint below the root does not apply, and
   biome's `includes` must start with `**`.
 - (−) `renovate.json5` and JSON5 files are neither formatted nor validated.
-- (−) The key `prettier` of `package.json` and overrides of prettier with a
-  directory are detected only by atom-markdown until lib-atom has that check.
 - (−) The lines that detect `extends` and `ignore-from-file` of yamllint and
   `extends` of biome's JSONC miss a value on a later line or in a flow mapping.
 - (−) Adopting the atom fails workflow-release until its actions describe their
@@ -307,9 +304,8 @@ error and the next-major warning.
   overridden package would not be the consumer's.
 - **The pre-commit hooks of check-jsonschema as published.** Their lookahead
   patterns are not read by `builtins.match`.
-- **The checks of `package.json` and prettier's overrides copied from
-  atom-markdown.** Logic with two users belongs in one place
-  ([FY-0035][fy-0035], [FY-0040][fy-0040]).
+- **The configuration rules of prettier copied from atom-markdown.** Logic with
+  two users belongs in one place ([FY-0035][fy-0035], [FY-0040][fy-0040]).
 
 [fy-0015]:
   https://github.com/flakeyard/decisions/blob/main/docs/adr/records/0015-documentation-rules.md
