@@ -1,0 +1,4 @@
+{
+  "files": { "includes": ["src/**", "**/*.json", "!dist/**", "!!**/generated"] },
+  "overrides": [{ "includes": ["docs/*.json"] }]
+}

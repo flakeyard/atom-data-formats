@@ -1,0 +1,7 @@
+---
+"extends": relaxed # the preset
+
+rules:
+  truthy:
+    ignore: |
+      generated/

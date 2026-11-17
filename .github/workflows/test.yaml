@@ -35,10 +35,20 @@ jobs:
       flake: ./dev
       expect-checks: >-
         ["data-formats","markdown","nix","shell","test-bad","test-bad-format",
-        "test-block-scalars","test-domain","test-excluded","test-follows",
-        "test-generated","test-generated-format","test-good","test-good-format",
-        "test-markdown","test-markdown-format","test-next-major",
-        "test-not-excluded","test-workspace","treefmt","workflows"]
+        "test-block-scalars","test-configs","test-configs-biome-dotted-json",
+        "test-configs-biome-dotted-jsonc","test-configs-biome-json",
+        "test-configs-biome-jsonc","test-configs-prettierrc",
+        "test-configs-prettierrc-json","test-configs-prettierrc-json5",
+        "test-configs-prettierrc-toml","test-configs-prettierrc-yaml",
+        "test-configs-prettierrc-yml","test-configs-taplo",
+        "test-configs-taplo-dotted","test-configs-yamllint",
+        "test-configs-yamllint-yaml","test-configs-yamllint-yml","test-domain",
+        "test-editorconfig","test-editorconfig-default","test-errors",
+        "test-excluded","test-follows","test-generated","test-generated-format",
+        "test-good","test-good-format","test-ignores","test-ignores-gitignore",
+        "test-markdown","test-markdown-format","test-nested","test-next-major",
+        "test-not-excluded","test-prettier-options","test-tool-configs",
+        "test-workspace","treefmt","workflows"]
       # The tests against the current upstream revisions (FY-0017, FY-0038).
       override-inputs: >-
         ${{ github.event_name == 'schedule'
