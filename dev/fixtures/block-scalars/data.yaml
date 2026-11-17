@@ -1,0 +1,13 @@
+kept:   |+
+    line one
+    line two
+
+
+folded:    >+
+    folded
+    text
+
+last:   |+
+    end
+
+

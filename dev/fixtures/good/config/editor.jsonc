@@ -1,0 +1,4 @@
+{
+  // A comment, which JSONC allows.
+  "editor.tabSize": 2,
+}
