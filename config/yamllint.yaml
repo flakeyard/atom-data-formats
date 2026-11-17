@@ -45,11 +45,10 @@ rules:
   document-end: disable
   # Off: a document needs no leading ---.
   document-start: disable
-  empty-lines:
-    level: error
-    max: 2
-    max-start: 0
-    max-end: 0
+  # Off: prettier removes extra empty lines, and keeps those that belong to
+  # the value of a block scalar with the indicator +, which the rule would
+  # report.
+  empty-lines: disable
   empty-values: disable
   float-values: disable
   hyphens:

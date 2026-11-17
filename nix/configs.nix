@@ -42,9 +42,13 @@ let
   # biome resolves extends and the patterns of includes against the
   # directory of the file of --config-path, a store path. A pattern that
   # does not start with ** after its ! matches no file of the project,
-  # without a message. The atom reads the JSON forms; JSONC may hold
-  # comments, which Nix does not parse, so there it looks for the key
-  # extends on a line, and does not detect includes.
+  # without a message. With vcs.enabled and vcs.useIgnoreFile, biome reads
+  # the .gitignore of the working directory, which the check of the domain
+  # does not hold, so the hook and the check would select different files.
+  # The atom reads the JSON forms; JSONC may hold comments, which Nix does
+  # not parse, so there it looks for lines that set extends or
+  # useIgnoreFile to true, skips lines that start with //, and does not
+  # detect includes. A key inside a /* */ comment is taken as set.
   biomes = [
     "biome.json"
     "biome.jsonc"
@@ -59,6 +63,9 @@ let
         lib.attrValues configuration ++ configuration.overrides or [ ]
       )
     );
+  # The lines of a JSONC file that are not // comments.
+  code = path: lib.filter (line: builtins.match "[[:space:]]*//.*" line == null) (lines path);
+  sets = pattern: path: lib.any (line: builtins.match pattern line != null) (code path);
   biome =
     name:
     if lib.hasSuffix ".jsonc" name then
@@ -66,8 +73,12 @@ let
         {
           inherit name;
           label = "${name} (extends)";
-          when =
-            path: lib.any (line: builtins.match ''.*"extends"[[:space:]]*:.*'' line != null) (lines path);
+          when = sets ''.*"extends"[[:space:]]*:.*'';
+        }
+        {
+          inherit name;
+          label = "${name} (useIgnoreFile)";
+          when = sets ''.*"useIgnoreFile"[[:space:]]*:[[:space:]]*true.*'';
         }
       ]
     else
@@ -86,6 +97,16 @@ let
             list (relative (read (project + "/${name}")))
           })";
           when = path: relative (read path) != [ ];
+        }
+        {
+          inherit name;
+          label = "${name} (useIgnoreFile)";
+          when =
+            path:
+            let
+              vcs = (read path).vcs or { };
+            in
+            (vcs.enabled or false) && (vcs.useIgnoreFile or false);
         }
       ];
   taplos = [
