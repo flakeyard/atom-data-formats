@@ -30,6 +30,10 @@
       inputs.treefmt-nix.follows = "treefmt-nix";
       inputs.git-hooks.follows = "git-hooks";
     };
+    atom-text = {
+      url = "git+https://github.com/flakeyard/atom-text?ref=v0&rev=5d3eff102fc73979c01625325f07c13d2ea1a6c6&shallow=1";
+      inputs.git-hooks.follows = "git-hooks";
+    };
     atom-workflows = {
       url = "git+https://github.com/flakeyard/atom-workflows?ref=v0&rev=82957679afb098f2c36fbcc1ccdf5d52f3286ba4&shallow=1";
       inputs.git-hooks.follows = "git-hooks";
@@ -92,6 +96,7 @@
           inputs.atom-markdown.flakeModules.default
           inputs.atom-nix.flakeModules.default
           inputs.atom-shell.flakeModules.default
+          inputs.atom-text.flakeModules.default
           inputs.atom-workflows.flakeModules.default
           inputs.atom-workspace.flakeModules.default
           # Every file under nix/ is a flake-parts module.
